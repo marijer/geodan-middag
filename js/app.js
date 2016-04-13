@@ -1,8 +1,8 @@
 var urlData = 'data/data.json';
 
-function getData(url) {
+function getData(url, callback) {
 	d3.json(url, function(error, data) {
-		photoGallery.createGallery(data.features);
+		callback(data.features);
 	})
 }
 
@@ -88,8 +88,16 @@ var photoGallery = {
 		svg.enter()
 			.append('div')
 			.attr('class', 'item');
-		
-		svg.append("img")
+
+		svg.append('a')
+			.attr('href', function(d){
+				return photoGallery.imgBaseSrc + d.properties.photoid;
+			})
+			.attr('title', function(d) {
+				return d.properties.username;
+			})
+			.attr('target', '_blank')
+			.append("img")
 		  	.attr("xlink:href", "myimage.png")
 		    .attr("src",function (d) {
 		    	return photoGallery.imgBaseSrc + d.properties.photoid;
@@ -97,14 +105,11 @@ var photoGallery = {
 		    .attr("width", 100)
 		    .attr("height", 100);
 	}
-}
+};
 
-
-function createImage(id) {
-
-}
-
-getData(urlData);
+getData(urlData, function(data) {
+	photoGallery.createGallery(data);
+});
 
 
 
