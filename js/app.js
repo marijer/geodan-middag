@@ -9,9 +9,10 @@ function getData(url) {
 var photoGallery = {
 	imgBaseSrc: 'http://saturnus.geodan.nl/geodanmiddag/uploads/',
 	data: [],
+	selectedAuthor: '',
 
 	createGallery: function(data) {
-		this.data = [];
+		this.data = data;
 		this.createPhotoGallery(data);
 
 		var authorList = this.createAuthorList(data);
@@ -52,12 +53,27 @@ var photoGallery = {
 		    });
 
 		    svg.on('click', function(d){
-		    	this.filterPhotos(d.key);
+		    	photoGallery.filterPhotos(d.key);
 		    })
 	},
 
 	filterPhotos: function( name ) {
+		var isSame = false;
+		if (this.selectedAuthor === name) {
+			isSame = true;
+		}
 
+		this.selectedAuthor = name;
+
+		d3.selectAll('.item')
+			.classed("none", function(d) { 
+				return d.properties.username !== name && !isSame;
+			});
+		
+		d3.selectAll('.filter-authors')
+			.classed('active', function(d) {
+				return d.key === name && !isSame;
+			});
 	},
 
 	createPhotoGallery: function(data) {
@@ -65,10 +81,13 @@ var photoGallery = {
 
 		var svg = d3.select("#photo-container")
 					.selectAll('.item')
-					.data(data)
-					.enter()
-					.append('div')
-					.attr('class', 'item');
+					.data(data, function(d){
+						return d.properties.photoid;
+					});
+
+		svg.enter()
+			.append('div')
+			.attr('class', 'item');
 		
 		svg.append("img")
 		  	.attr("xlink:href", "myimage.png")
@@ -76,8 +95,7 @@ var photoGallery = {
 		    	return photoGallery.imgBaseSrc + d.properties.photoid;
 		    })
 		    .attr("width", 100)
-		    .attr("height", 100)
-
+		    .attr("height", 100);
 	}
 }
 
