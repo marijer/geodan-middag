@@ -1,1 +1,2 @@
-import 'js/app.js';
+import {photoController} from 'js/photo.controller.js';
+photoController.init();
