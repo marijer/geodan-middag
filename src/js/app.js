@@ -93,7 +93,7 @@ var photoGallery = {
 };
 
 var model = {
-	urlData: 'data/data.json',
+	urlData: '../data/data.json',
 	data: [],
 
 	init: function(fn) {
