@@ -1,4 +1,4 @@
-
+import d3 from 'd3';
 
 function getData(url, callback) {
 	d3.json(url, function(error, data) {

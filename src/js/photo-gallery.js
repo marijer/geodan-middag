@@ -1,4 +1,3 @@
-import { authorFilter } from 'js/author-filter.js';
 import { model } from 'js/model.js';
 
 var photoGallery = {
